@@ -84,9 +84,9 @@ function UnqliteDB::kv_set(%this, %key, %value)
 	return true;
 }
 
-function UnqliteDB::kv_delete(%this, %key, %value)
+function UnqliteDB::kv_delete(%this, %key)
 {
-	unqlite_delete(%this.kvdb, %key, %value);
+	unqlite_delete(%this.kvdb, %key);
 	if ($Unqlite::LastError != 0 && $Unqlite::LastError != -6) //ignore key missing errors
 	{
 		error("Unable to delete key ", %key, " on kvdb ", %this.kvdb);
@@ -170,6 +170,16 @@ package UnqliteDBPackage
 			%db.kv_commit();
 		}
 		parent::onQuit();
+	}
+
+	function onExit()
+	{
+		for (%i = 0; %i < $MainUnqliteDBSet.getCount(); %i++)
+		{
+			%db = $MainUnqliteDBSet.getObject(%i);
+			%db.kv_commit();
+		}
+		parent::onExit();
 	}
 };
 activatePackage(UnqliteDBPackage);
