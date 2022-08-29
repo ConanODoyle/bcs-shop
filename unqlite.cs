@@ -162,6 +162,12 @@ function UnqliteDB::kv_export(%this, %file)
 
 package UnqliteDBPackage
 {
+	function UnqliteDB::onRemove(%this)
+	{
+		%this.kv_close();
+		parent::onRemove(%this);
+	}
+
 	function onQuit()
 	{
 		for (%i = 0; %i < $MainUnqliteDBSet.getCount(); %i++)
