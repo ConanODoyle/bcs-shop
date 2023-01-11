@@ -25,7 +25,7 @@ function GameConnection::openDatabase(%this)
 	{
 		%this.kvdb = getUnqliteDB();
 	}
-	%this.kvdb.kv_open("config/server/ClientDatabases/" @ %this.bl_id @ ".db");
+	%this.kvdb.kv_open("config/Unqlite/ClientDatabases/" @ %this.bl_id @ ".db");
 }
 
 function GameConnection::closeDatabase(%this)

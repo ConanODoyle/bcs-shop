@@ -63,6 +63,7 @@ function UnqliteDB::kv_close(%this)
 
 function UnqliteDB::kv_get(%this, %key)
 {
+	%key = strLwr(%key);
 	if (!%this.open)
 	{
 		error("Unable to get key - no database open");
@@ -73,6 +74,7 @@ function UnqliteDB::kv_get(%this, %key)
 
 function UnqliteDB::kv_set(%this, %key, %value)
 {
+	%key = strLwr(%key);
 	unqlite_store(%this.kvdb, %key, %value);
 	if ($Unqlite::LastError != 0)
 	{
@@ -86,6 +88,7 @@ function UnqliteDB::kv_set(%this, %key, %value)
 
 function UnqliteDB::kv_delete(%this, %key)
 {
+	%key = strLwr(%key);
 	unqlite_delete(%this.kvdb, %key);
 	if ($Unqlite::LastError != 0 && $Unqlite::LastError != -6) //ignore key missing errors
 	{

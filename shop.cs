@@ -324,6 +324,9 @@ function getItemDescription(%item, %sale)
 		return "";
 	}
 
+	// if ($ShopDB.itemDescription[getSafeVariableName(%item), getSafeVariableName(%sale)] !$= "")
+	// 	return $ShopDB.itemDescription[getSafeVariableName(%item), getSafeVariableName(%sale)];
+
 	%type = $ShopDB.kv_get(%keyType);
 	%itemDescription = $ShopDB.kv_get(%keyDescription);
 	%typeDescription = $ShopDB.kv_get(%type @ "_description");
@@ -342,5 +345,8 @@ function getItemDescription(%item, %sale)
 	else if (%typeDescription !$= "") %description = %typeDescription;
 	else if (%defaultDescription !$= "") %description = %defaultDescription;
 
-	return applyReplacers(%description, %item, %sale);
+	%ret = applyReplacers(%description, %item, %sale);
+	//memoize for faster repeat pullup?
+	// $ShopDB.itemDescription_[getSafeVariableName(%item), getSafeVariableName(%sale)] = %ret;
+	return %ret;
 }
